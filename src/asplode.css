@@ -27,6 +27,13 @@
 	-o-transform: scale(1);
 	transform: scale(1);
 }
+.asplode-notrans img {
+	-webkit-transition: none;
+	-moz-transition: none;
+	-ms-transition: none;
+	-o-transition: none;
+	transition: none;
+}
 .asplode nav {
 	position: absolute;
 	top: 1em;

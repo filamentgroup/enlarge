@@ -31,8 +31,16 @@
 		});
 	};
 
+	asplode.prototype.pinch = function( scale ){
+		this.scale= scale;
+		if( this.scale < 1 ){
+			this.scale = 1;
+		}
+		this.setScale( "scale(" + this.scale + ")" );
+	};
+
 	asplode.prototype.out = function() {
-		this.scale-=this.scaleFactor;
+		this.scale-= this.scaleFactor;
 		if( this.scale < 1 ){
 			this.scale = 1;
 		}
@@ -40,7 +48,7 @@
 	};
 
 	asplode.prototype.in = function() {
-		this.scale+=this.scaleFactor;
+		this.scale+= this.scaleFactor;
 		this.setScale( "scale(" + this.scale + ")" );
 	};
 
@@ -48,14 +56,15 @@
 		var self = this,
 			$btns = $( "<nav><button class='" + componentName + "-in' title='Zoom in'>+</button><button class='" + componentName + "-out' title='Zoom Out'>-</button></nav>" );
 
-		$btns.bind( "touchstart mousedown",function( e ){
+		$btns.bind( "touchend mouseup",function( e ){
+			self.$element.removeClass( "asplode-notrans" );
 			if( $( e.target ).is( "." + componentName + "-in" ) ){
 				self.in();
 			}
 			else {
 				self.out();
 			}
-			e.preventDefault();
+			e.originalEvent.preventDefault();
 		} );
 
 		$btns.appendTo( this.element );
@@ -63,29 +72,28 @@
 
 	asplode.prototype.gestures = function() {
 		var lastTouchTime,
-			coords = [],
+			startScale,
 			self = this;
 
 		this.$element
 			.bind( "touchstart", function( e ){
-				if( e.originalEvent.touches.length > 1 ){
-					e.preventDefault();
-					coords[ 0 ] = [ e.originalEvent.touches[ 0 ].pageX, e.originalEvent.touches[ 0 ].pageY ];
-					coords[ 1 ] = [ e.originalEvent.touches[ 1 ].pageX, e.originalEvent.touches[ 1 ].pageY ];
-				}
-			} )
-			.bind( "touchmove", function( e ){
-				if( e.originalEvent.touches.length > 1 ){
-					var thisCoords = [];
-					thisCoords[ 0 ] = [ e.originalEvent.touches[ 0 ].pageX, e.originalEvent.touches[ 0 ].pageY ];
-					thisCoords[ 1 ] = [ e.originalEvent.touches[ 1 ].pageX, e.originalEvent.touches[ 1 ].pageY ];
+				self.$element.addClass( "asplode-notrans" );
+			})
+			.bind( "gesturestart", function( e ){
 
-				}
+				e.originalEvent.preventDefault();
+				startScale = e.originalEvent.scale;
+			})
+			.bind( "gesturechange", function( e ){
+				var scale = e.originalEvent.scale * startScale;
+				self.pinch( scale );
+
 			} );
 
 		// doubletap
 		this.$element
 			.bind( "touchend", function( e ){
+				self.$element.removeClass( "asplode-notrans" );
 				if( $( e.target ).closest( "nav" ).length > 0 ){
 					return;
 				}
@@ -94,7 +102,8 @@
 					self.in();
 				}
 				lastTouchTime = thisTime;
-				e.preventDefault();
+				e.originalEvent.preventDefault();
+
 			} );
 	};
 
