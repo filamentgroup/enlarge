@@ -82,7 +82,7 @@
 			.bind( "gesturestart", function( e ){
 
 				e.originalEvent.preventDefault();
-				startScale = e.originalEvent.scale;
+				startScale = self.scale;
 			})
 			.bind( "gesturechange", function( e ){
 				var scale = e.originalEvent.scale * startScale;
