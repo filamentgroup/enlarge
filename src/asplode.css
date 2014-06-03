@@ -3,7 +3,6 @@
 	position: relative;
 	border: 1px solid #eee;
 	overflow: hidden;
-	width: 100%;
 }
 .asplode-zoom {
 	overflow: scroll;
@@ -11,10 +10,10 @@
 	padding-bottom: 50px;
 	margin-bottom: -50px;
 	margin-right: -50px;
-	padding-bottom: 50px;
+	padding-right: 50px;
 }
 .asplode img {
-	max-width: 100%;
+	width: 100%;
 	-webkit-transition: -webkit-transform .3s ease-out;
 	-moz-transition: -moz-transform .3s ease-out;
 	-ms-transition: -ms-transform .3s ease-out;

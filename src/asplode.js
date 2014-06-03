@@ -18,10 +18,13 @@
 		this.$element = $( element );
 		this.$img = this.$element.find( "img" );
 		this.scale = 1;
+		this.minScale = 1;
+		this.maxScale = 2;
 		this.scaleFactor = options && options.scaleFactor || 1;
 	};
 
 	asplode.prototype.setScale = function( val ) {
+		val = "scale(" + val + ")";
 		this.$img.css( {
 			"webkitTransform": val,
 			"mozTransform": val,
@@ -31,45 +34,31 @@
 		});
 	};
 
-	asplode.prototype.setOrigin = function( val ) {
-		this.$img.css( {
-			"webkitTransformOrigin": val,
-			"mozTransformOrigin": val,
-			"msTransformOrigin": val,
-			"oTransformOrigin": val,
-			"transformOrigin": val
-		});
-	};
-
-	asplode.prototype.clearOrigin = function(){
-		this.setOrigin( "" );
-	};
-
 	asplode.prototype.pinch = function( scale ){
 		this.scale= scale;
-		if( this.scale < 1 ){
-			this.scale = 1;
+		if( this.scale < this.minScale ){
+			this.scale = this.minScale;
 		}
-		this.setScale( "scale(" + this.scale + ")" );
+		if( this.scale > this.maxScale ){
+			this.scale = this.maxScale;
+		}
+		this.setScale( this.scale );
 	};
 
 	asplode.prototype.out = function() {
-		this.setOrigin( "50% 50%" );
-		this.scrollToTL();
-		this.updateScroll();
 		this.scale-= this.scaleFactor;
-		if( this.scale < 1 ){
-			this.scale = 1;
+		if( this.scale < this.minScale ){
+			this.scale = this.minScale;
 		}
-		this.setScale( "scale(" + this.scale + ")" );
+		this.setScale( this.scale );
 	};
 
 	asplode.prototype.in = function() {
-		this.setOrigin( "50% 50%" );
-		this.scrollToTL();
-		this.updateScroll();
 		this.scale+= this.scaleFactor;
-		this.setScale( "scale(" + this.scale + ")" );
+		if( this.scale > this.maxScale ){
+			this.scale = this.maxScale;
+		}
+		this.setScale( this.scale );
 	};
 
 
@@ -91,27 +80,6 @@
 		$btns.appendTo( this.element );
 	};
 
-	asplode.prototype.scrollToCenter = function() {
-		var scrollDiv = this.$element.children( 0 )[ 0 ];
-		scrollDiv.scrollLeft = scrollDiv.scrollWidth / 2 - scrollDiv.offsetWidth / 2;
-		scrollDiv.scrollTop = scrollDiv.scrollHeight / 2 - scrollDiv.offsetHeight / 2;
-	};
-
-	asplode.prototype.scrollToTL = function() {
-		var $scrollDiv = this.$element.children( 0 )[ 0 ];
-		$scrollDiv.scrollLeft = 0;
-		$scrollDiv.scrollTop = 0;
-	};
-
-	asplode.prototype.updateScroll = function(){
-		var self = this;
-		this.$element.bind( "webkitTransitionEnd", function(){
-			setTimeout(function(){
-				self.clearOrigin();
-				self.scrollToCenter();
-			}, 0);
-		} );
-	};
 
 	asplode.prototype.gestures = function() {
 		var lastTouchTime,
@@ -131,18 +99,21 @@
 			.bind( "gesturechange", function( e ){
 				var scale = e.originalEvent.scale * startScale;
 				self.pinch( scale );
-				self.scrollToCenter();
 			} )
 			// doubletap
 			.bind( "touchend", function( e ){
-
 				self.$element.removeClass( "asplode-notrans" );
 				if( $( e.target ).closest( "nav" ).length > 0 ){
 					return;
 				}
 				var thisTime = new Date().getTime();
 				if( lastTouchTime && thisTime - lastTouchTime < 500 ){
-					self.in();
+					if( self.scale === self.maxScale ){
+						self.out();
+					}
+					else {
+						self.in();
+					}
 				}
 				lastTouchTime = thisTime;
 				e.originalEvent.preventDefault();
