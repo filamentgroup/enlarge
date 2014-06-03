@@ -17,6 +17,7 @@
 		this.element = element;
 		this.$element = $( element );
 		this.$img = this.$element.find( "img" );
+		this.$scroller = this.$element.find( ".asplode-zoom" );
 		this.scale = 1;
 		this.minScale = 1;
 		this.maxScale = 2;
@@ -41,8 +42,7 @@
 	};
 
 	asplode.prototype.setMaxHeight = function(){
-		var scroller = this.$element.find( ".asplode-zoom" );
-		scroller.css( "padding-top", scroller[ 0 ].offsetHeight / scroller[ 0 ].offsetWidth * 100 + "%" );
+		this.$scroller.css( "padding-top", this.$scroller[ 0 ].offsetHeight / this.$scroller[ 0 ].offsetWidth * 100 + "%" );
 		this.$element.addClass( "asplode-basic" );
 		this.$img[ 0 ].offsetLeft;
 	};
@@ -70,7 +70,6 @@
 			$btns = $( "<nav><button class='" + componentName + "-in' title='Zoom in'>+</button><button class='" + componentName + "-out' title='Zoom Out'>-</button></nav>" );
 
 		$btns.bind( "touchend mouseup",function( e ){
-			self.$element.removeClass( "asplode-notrans" );
 			if( $( e.target ).is( "." + componentName + "-in" ) ){
 				self.in();
 			}
@@ -83,49 +82,49 @@
 		$btns.appendTo( this.element );
 	};
 
+	asplode.prototype.toggleZoom = function(){
+		if( this.scale === this.maxScale ){
+			this.out();
+		}
+		else {
+			this.in();
+		}
+	};
+
 
 	asplode.prototype.gestures = function() {
 		var lastTouchTime,
-			startScale,
-			pinchX,
-			pinchY,
+			hoverDisable = false,
 			self = this;
 
+		// doubletap
 		this.$element
-			.bind( "touchstart", function( e ){
-				self.$element.addClass( "asplode-notrans" );
-			})
-			.bind( "gesturestart", function( e ){
-				e.originalEvent.preventDefault();
-				startScale = self.scale;
-			})
-			.bind( "gesturechange", function( e ){
-				var scale = e.originalEvent.scale * startScale;
-				self.pinch( scale );
+			.bind( "touchstart", function(){
+				hoverDisable = true;
 			} )
-			// doubletap
 			.bind( "touchend", function( e ){
-				self.$element.removeClass( "asplode-notrans" );
+				hoverDisable = false;
 				if( $( e.target ).closest( "nav" ).length > 0 ){
 					return;
 				}
 				var thisTime = new Date().getTime();
 				if( lastTouchTime && thisTime - lastTouchTime < 500 ){
-					if( self.scale === self.maxScale ){
-						self.out();
-					}
-					else {
-						self.in();
-					}
+					self.toggleZoom();
 				}
 				lastTouchTime = thisTime;
 				e.originalEvent.preventDefault();
 
 			} )
-			.bind( "mouseover", function( e ){
-				//var scale =
+			.bind( "dblclick", function(){
+				self.toggleZoom();
+			})
+			.bind( "mouseover mousemove", function( e ){
+				if( self.scale === self.minScale || hoverDisable ){
+					return;
+				}
+				self.$scroller[ 0 ].scrollLeft = ( e.pageX - self.$element[ 0 ].offsetLeft ) * self.scale;
+				self.$scroller[ 0 ].scrollTop = ( e.pageY- self.$element[ 0 ].offsetTop ) * self.scale;
 			});
-
 	};
 
 	asplode.prototype.init = function() {
