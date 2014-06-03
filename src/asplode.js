@@ -24,13 +24,8 @@
 	};
 
 	asplode.prototype.setScale = function( val ) {
-		val = "scale(" + val + ")";
 		this.$img.css( {
-			"webkitTransform": val,
-			"mozTransform": val,
-			"msTransform": val,
-			"oTransform": val,
-			"transform": val
+			"width": val * 100 + "%"
 		});
 	};
 
@@ -45,6 +40,13 @@
 		this.setScale( this.scale );
 	};
 
+	asplode.prototype.setMaxHeight = function(){
+		var scroller = this.$element.find( ".asplode-zoom" );
+		scroller.css( "padding-top", scroller[ 0 ].offsetHeight / scroller[ 0 ].offsetWidth * 100 + "%" );
+		this.$element.addClass( "asplode-basic" );
+		this.$img[ 0 ].offsetLeft;
+	};
+
 	asplode.prototype.out = function() {
 		this.scale-= this.scaleFactor;
 		if( this.scale < this.minScale ){
@@ -54,6 +56,7 @@
 	};
 
 	asplode.prototype.in = function() {
+		this.setMaxHeight();
 		this.scale+= this.scaleFactor;
 		if( this.scale > this.maxScale ){
 			this.scale = this.maxScale;

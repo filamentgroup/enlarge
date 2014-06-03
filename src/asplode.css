@@ -2,33 +2,25 @@
 .asplode {
 	position: relative;
 	border: 1px solid #eee;
-	overflow: hidden;
 }
 .asplode-zoom {
-	overflow: scroll;
+	overflow: auto;
+	position: relative;
 	-webkit-overflow-scrolling: touch;
-	padding-bottom: 50px;
-	margin-bottom: -50px;
-	margin-right: -50px;
-	padding-right: 50px;
 }
 .asplode img {
 	width: 100%;
-	-webkit-transition: -webkit-transform .3s ease-out;
-	-moz-transition: -moz-transform .3s ease-out;
-	-ms-transition: -ms-transform .3s ease-out;
-	-o-transition: -o-transform .3s ease-out;
-	transition: transform .3s ease-out;
-	-webkit-transform: scale(1);
-	-moz-transform: scale(1);
-	-ms-transform: scale(1);
-	-o-transform: scale(1);
-	transform: scale(1);
-	-webkit-transform-origin: 0 0;
-	-moz-transform-origin: 0 0;
-	-ms-transform-origin: 0 0;
-	-o-transform-origin: 0 0;
-	transform-origin: 0 0;
+	-webkit-transform: translateZ(0);
+	-webkit-transition: width .2s ease-out;
+	-moz-transition: width .2s ease-out;
+	-ms-transition: width .2s ease-out;
+	-o-transition: width .2s ease-out;
+	transition: width .2s ease-out;
+}
+.asplode-basic img {
+	position: absolute;
+	top: 0;
+	left: 0;
 }
 .asplode-notrans img {
 	-webkit-transition: none;
