@@ -6,7 +6,6 @@
 .asplode-zoom {
 	overflow: auto;
 	position: relative;
-	-webkit-overflow-scrolling: touch;
 }
 .asplode img {
 	width: 100%;
