@@ -13,6 +13,9 @@
 	padding-right: 20px;
 	padding-bottom: 20px;
 }
+.asplode-hovering .asplode-zoom {
+	overflow: hidden;
+}
 .asplode img {
 	width: 100%;
 	-webkit-transform: translateZ(0);

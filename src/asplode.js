@@ -20,8 +20,8 @@
 		this.$scroller = this.$element.find( ".asplode-zoom" );
 		this.scale = 1;
 		this.minScale = 1;
-		this.maxScale = 2;
-		this.scaleFactor = options && options.scaleFactor || 1;
+		this.maxScale = 1.8;
+		this.scaleFactor = options && options.scaleFactor || .8;
 	};
 
 	asplode.prototype.setScale = function( val ) {
@@ -91,6 +91,15 @@
 		}
 	};
 
+	asplode.prototype.scrollToMouse = function( e ){
+		var self = this;
+		if( self.scale === self.minScale ){
+			return;
+		}
+		self.$scroller[ 0 ].scrollLeft = ( e.originalEvent.pageX - self.$element[ 0 ].offsetLeft ) * self.scale;
+		self.$scroller[ 0 ].scrollTop = ( e.originalEvent.pageY- self.$element[ 0 ].offsetTop ) * self.scale;
+	};
+
 
 	asplode.prototype.gestures = function() {
 		var lastTouchTime,
@@ -118,13 +127,24 @@
 			.bind( "dblclick", function(){
 				self.toggleZoom();
 			})
-			.bind( "mouseover mousemove", function( e ){
-				if( self.scale === self.minScale || hoverDisable ){
-					return;
+			.bind( "mouseover", function(e){
+				if( !hoverDisable ){
+					self.$element.addClass( "asplode-hovering" );
+					self.in();
 				}
-				self.$scroller[ 0 ].scrollLeft = ( e.pageX - self.$element[ 0 ].offsetLeft ) * self.scale;
-				self.$scroller[ 0 ].scrollTop = ( e.pageY- self.$element[ 0 ].offsetTop ) * self.scale;
+			})
+			.bind( "mouseout", function(e){
+				if( !hoverDisable ){
+					self.$element.removeClass( "asplode-hovering" );
+					self.out();
+				}
+			})
+			.bind( "mouseover mousemove", function( e ){
+				if( !hoverDisable ){
+					self.scrollToMouse( e );
+				}
 			});
+
 	};
 
 	asplode.prototype.init = function() {
