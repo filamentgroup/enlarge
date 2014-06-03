@@ -31,6 +31,20 @@
 		});
 	};
 
+	asplode.prototype.setOrigin = function( val ) {
+		this.$img.css( {
+			"webkitTransformOrigin": val,
+			"mozTransformOrigin": val,
+			"msTransformOrigin": val,
+			"oTransformOrigin": val,
+			"transformOrigin": val
+		});
+	};
+
+	asplode.prototype.clearOrigin = function(){
+		this.setOrigin( "" );
+	};
+
 	asplode.prototype.pinch = function( scale ){
 		this.scale= scale;
 		if( this.scale < 1 ){
@@ -40,6 +54,9 @@
 	};
 
 	asplode.prototype.out = function() {
+		this.setOrigin( "50% 50%" );
+		this.scrollToTL();
+		this.updateScroll();
 		this.scale-= this.scaleFactor;
 		if( this.scale < 1 ){
 			this.scale = 1;
@@ -48,9 +65,13 @@
 	};
 
 	asplode.prototype.in = function() {
+		this.setOrigin( "50% 50%" );
+		this.scrollToTL();
+		this.updateScroll();
 		this.scale+= this.scaleFactor;
 		this.setScale( "scale(" + this.scale + ")" );
 	};
+
 
 	asplode.prototype.buttons = function(){
 		var self = this,
@@ -70,9 +91,33 @@
 		$btns.appendTo( this.element );
 	};
 
+	asplode.prototype.scrollToCenter = function() {
+		var scrollDiv = this.$element.children( 0 )[ 0 ];
+		scrollDiv.scrollLeft = scrollDiv.scrollWidth / 2 - scrollDiv.offsetWidth / 2;
+		scrollDiv.scrollTop = scrollDiv.scrollHeight / 2 - scrollDiv.offsetHeight / 2;
+	};
+
+	asplode.prototype.scrollToTL = function() {
+		var $scrollDiv = this.$element.children( 0 )[ 0 ];
+		$scrollDiv.scrollLeft = 0;
+		$scrollDiv.scrollTop = 0;
+	};
+
+	asplode.prototype.updateScroll = function(){
+		var self = this;
+		this.$element.bind( "webkitTransitionEnd", function(){
+			setTimeout(function(){
+				self.clearOrigin();
+				self.scrollToCenter();
+			}, 0);
+		} );
+	};
+
 	asplode.prototype.gestures = function() {
 		var lastTouchTime,
 			startScale,
+			pinchX,
+			pinchY,
 			self = this;
 
 		this.$element
@@ -80,19 +125,17 @@
 				self.$element.addClass( "asplode-notrans" );
 			})
 			.bind( "gesturestart", function( e ){
-
 				e.originalEvent.preventDefault();
 				startScale = self.scale;
 			})
 			.bind( "gesturechange", function( e ){
 				var scale = e.originalEvent.scale * startScale;
 				self.pinch( scale );
-
-			} );
-
-		// doubletap
-		this.$element
+				self.scrollToCenter();
+			} )
+			// doubletap
 			.bind( "touchend", function( e ){
+
 				self.$element.removeClass( "asplode-notrans" );
 				if( $( e.target ).closest( "nav" ).length > 0 ){
 					return;
@@ -104,7 +147,11 @@
 				lastTouchTime = thisTime;
 				e.originalEvent.preventDefault();
 
-			} );
+			} )
+			.bind( "mouseover", function( e ){
+				//var scale =
+			});
+
 	};
 
 	asplode.prototype.init = function() {

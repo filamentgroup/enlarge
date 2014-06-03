@@ -13,7 +13,9 @@
 
 	$.fn[ pluginName ] = function(){
 		return this.each(function(){
-			$( this ).data( pluginName, new window.componentNamespace[ pluginName ]( this ).init() );
+			var widget =  new window.componentNamespace[ pluginName ]( this );
+			$( this ).data( pluginName, widget );
+			widget.init();
 		});
 	};
 
