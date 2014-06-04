@@ -23,7 +23,7 @@
 					stripBanners: true
 				},
 				dist: {
-					src: ['src/<%= pkg.name %>.js'],
+					src: ['src/<%= pkg.name %>.js', 'src/<%= pkg.name %>-init.js'],
 					dest: 'dist/<%= pkg.name %>.js'
 				}
 			},
