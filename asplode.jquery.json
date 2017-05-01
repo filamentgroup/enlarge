@@ -1,9 +1,9 @@
 {
-  "name": "asplode",
-  "title": "asplode",
-  "description": "asplode description",
+  "name": "enlarge",
+  "title": "enlarge",
+  "description": "enlarge description",
   "version": "0.1.0",
-  "homepage": "https://github.com/filamentgroup/asplode",
+  "homepage": "https://github.com/filamentgroup/enlarge",
   "author": {
     "name": "Filament Group",
     "email": "hello@filamentgroup.com",
@@ -11,13 +11,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/filamentgroup/asplode.git"
+    "url": "https://github.com/filamentgroup/enlarge.git"
   },
-  "bugs": "https://github.com/filamentgroup/asplode/issues",
+  "bugs": "https://github.com/filamentgroup/enlarge/issues",
   "licenses": [
     {
       "type": "MIT",
-      "url": "https://github.com/filamentgroup/asplode/blob/master/LICENSE-MIT"
+      "url": "https://github.com/filamentgroup/enlarge/blob/master/LICENSE-MIT"
     }
   ],
   "dependencies": {
