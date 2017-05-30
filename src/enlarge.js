@@ -145,6 +145,10 @@
  						imgOriginalSizes = o.image.sizes;
  						toggleImgSrc();
  					}
+
+					if( o.disabled && zoomed ) {
+						standardToggleZoom();
+					}
  				});
 
  				// loader div holds a new image while its new source is loading
@@ -201,6 +205,10 @@
  				// lock zoom mode allows for scrolling around normally without a cursor-follow behavior
  				function toggleLockZoom(){
  					if( !lockedZoom ){
+						// NOTE we allow the image to zoom out if functionality gets disabled
+						// when it's in a zoomed state
+						if(o.disabled) { return false; }
+
  						$parentPane.add( $zoomParent ).addClass( lockZoomClass );
  						lockedZoom = true;
  						$zoomContain.attr( "tabindex", "0" );
@@ -220,6 +228,10 @@
  				// toggle magnification of image
  				function toggleImgZoom(){
  					if( zoomed ){
+						// NOTE we allow the image to zoom out if functionality gets disabled
+						// when it's in a zoomed state
+						if(o.disabled) { return false; }
+
  						if( o.placement === "inline" ){
  							$contain.add( $parentPane ).css( { "width": $parentPane[0].offsetWidth + "px", "height": parseFloat( getComputedStyle( $parentPane[0] ).height ) + "px" } );
  						}
@@ -255,6 +267,9 @@
 
  				// lock zoom mode toggle
  				function standardToggleZoom(){
+					// NOTE if the current is zoomed out and it's disabled prevent toggling
+					if(o.disabled && !zoomed) { return false; }
+
  					toggleZoomState();
  					toggleImgSrc();
  					toggleImgZoom();
