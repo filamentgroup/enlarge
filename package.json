@@ -1,11 +1,19 @@
 {
-  "name": "jquery-plugin",
-  "version": "0.0.0-ignored",
-  "engines": {
-    "node": ">= 0.8.0"
+  "name": "fg-enlarge",
+  "version": "0.0.1",
+  "description": "An image zoom jQuery plugin",
+  "author": {
+    "name": "Scott Jehl, Filament Group, Inc.",
+    "url": "http://filamentgroup.com"
   },
-  "scripts": {
-    "test": "grunt qunit"
+  "main": "src/enlarge.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/filamentgroup/enlarge.git"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/filamentgroup/enlarge/issues"
   },
   "devDependencies": {
     "grunt-contrib-jshint": "~0.6.0",
@@ -14,6 +22,7 @@
     "grunt-contrib-uglify": "~0.2.0",
     "grunt-contrib-watch": "~0.4.0",
     "grunt-contrib-clean": "~0.4.0",
-    "grunt": "~0.4.2"
+    "grunt": "~0.4.5",
+    "grunt-cli": "~0.1.11"
   }
 }

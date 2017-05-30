@@ -7,7 +7,7 @@
 		// Project configuration.
 		grunt.initConfig({
 			// Metadata.
-			pkg: grunt.file.readJSON('asplode.jquery.json'),
+			pkg: grunt.file.readJSON('package.json'),
 			banner: '/*! <%= pkg.title || pkg.name %> - v<%= pkg.version %> - ' +
 				'<%= grunt.template.today("yyyy-mm-dd") %>\n' +
 				'<%= pkg.homepage ? "* " + pkg.homepage + "\\n" : "" %>' +
@@ -22,9 +22,13 @@
 					banner: '<%= banner %>',
 					stripBanners: true
 				},
+				/*lib: {
+					src: 'node_modules/jquery/dist/jquery.js',
+					dest: 'libs/jquery/jquery.js'
+				},*/
 				dist: {
-					src: ['src/<%= pkg.name %>.js', 'src/<%= pkg.name %>-init.js'],
-					dest: 'dist/<%= pkg.name %>.js'
+					src: ['src/enlarge.js', 'src/enlarge-init.js'],
+					dest: 'dist/enlarge.js'
 				}
 			},
 			uglify: {
@@ -33,7 +37,7 @@
 				},
 				dist: {
 					src: ['<%= concat.dist.src %>'],
-					dest: 'dist/<%= pkg.name %>.min.js'
+					dest: 'dist/enlarge.min.js'
 				}
 			},
 			qunit: {
@@ -48,13 +52,13 @@
 				},
 				src: {
 					options: {
-						jshintrc: 'src/.jshintrc'
+						jshintrc: '.jshintrc'
 					},
 					src: ['src/**/*.js']
 				},
 				test: {
 					options: {
-						jshintrc: 'test/.jshintrc'
+						jshintrc: '.jshintrc'
 					},
 					src: ['test/**/*.js']
 				}
@@ -84,7 +88,7 @@
 		grunt.loadNpmTasks('grunt-contrib-watch');
 
 		// Default task.
-		grunt.registerTask('default', ['jshint', 'qunit', 'clean', 'concat', 'uglify']);
+		grunt.registerTask('default', [ 'clean', 'concat', 'uglify']);
 
 	};
 })();

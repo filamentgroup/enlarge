@@ -5,8 +5,8 @@ Description
 ## Getting Started
 Download the [production version][min] or the [development version][max].
 
-[min]: https://raw.github.com/filamentgroup/asplode/master/dist/enlarge.min.js
-[max]: https://raw.github.com/filamentgroup/asplode/master/dist/enlarge.js
+[min]: https://raw.github.com/filamentgroup/enlarge/master/dist/enlarge.min.js
+[max]: https://raw.github.com/filamentgroup/enlarge/master/dist/enlarge.js
 
 In your web page:
 

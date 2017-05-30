@@ -1,0 +1,127 @@
+/*
+ * enlarge plugin
+ *
+ * Copyright (c) 2016 Filament Group, Inc.
+ * Licensed under MIT
+*/
+
+.enlarge_pane {
+	position: relative;
+}
+.enlarge_btn {
+	position: absolute;
+	top: 8px;
+	left: 8px;
+	font-size: 12px;
+	overflow: hidden;
+	background-color: rgba(255,255,255,.8);
+	color: #000;
+	text-decoration: none;
+	padding: .5em;
+}
+.enlarge_btn:hover,
+.enlarge_btn:focus {
+
+}
+.enlarge_btn:active {
+
+}
+.zoom-out {
+
+}
+.enlarge-locked .enlarge_btn {
+	background-color: #333;
+	color: #fff;
+	border-color: #333;
+	background-image: url(/img/zoom-out-light.svg);
+}
+.enlarge-zoomed {
+	overflow: hidden;
+}
+.enlarge_contain {
+	overflow: hidden;
+	-webkit-overflow-scrolling: touch;
+	display: block;
+	position: relative;
+	height: 100%;
+}
+.enlarge_contain img {
+	width: 100%;
+	-webkit-touch-callout: none; /* image share menus get in the way of the interaction */
+}
+.enlarge-zoomed .enlarge_contain img,
+.enlarge-zoomed.enlarge_flyout .enlarge_contain img {
+	max-width: none;
+}
+.enlarge-locked .enlarge_contain {
+	overflow: scroll;
+}
+.enlarge_loader {
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 5px;
+	position: absolute;
+	z-index: 30;
+	background: #eee;
+	opacity: 0;
+	display: none;
+}
+.enlarge-delay .enlarge_loader {
+	/* opacity: .4; disable loader for now */
+}
+.enlarge_loader * {
+	width: 0;
+	display: block;
+	height: 5px;
+	background: #4fa4c0;
+	-webkit-transition: width .6s linear;
+	transition: width .6s linear;
+}
+
+.enlarge_img-loading {
+	position: absolute;
+	left: -9999px;
+	opacity: 0;
+}
+.enlarge_flyout {
+	overflow: hidden;
+	opacity: 0;
+	transform: scale(0);
+	transition: transform .3s;
+	position: absolute;
+	z-index: 9999;
+}
+.enlarge_flyout-flyoutloupe {
+	border-radius: 100%;
+	border: 5px solid #fff;
+	box-shadow: 0 0 5px #333;
+	  pointer-events: none;
+}
+.enlarge_flyout-flyouttopleft,
+.enlarge_flyout-flyouttopright {
+	top: 0;
+}
+.enlarge_flyout-flyoutbottomleft,
+.enlarge_flyout-flyoutbottomright {
+	bottom: 0;
+}
+.enlarge_flyout-flyouttopright,
+.enlarge_flyout-flyoutbottomright {
+	transform-origin: left;
+}
+.enlarge_flyout-flyouttopleft,
+.enlarge_flyout-flyoutbottomleft {
+	transform-origin: right;
+}
+.enlarge-zoomed.enlarge_flyout {
+	transform: scale(1);
+	opacity: 1;
+	overflow: hidden;
+}
+.enlarge-zoomed.enlarge_flyout .enlarge_contain {
+	overflow: visible;
+}
+.enlarge-locked.enlarge_flyout {
+	overflow: auto;
+}

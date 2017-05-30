@@ -1,4 +1,4 @@
-/*global asplode:true*/
+/*global enlarge:true*/
 (function() {
 	/*
 		======== A Handy Little QUnit Reference ========
