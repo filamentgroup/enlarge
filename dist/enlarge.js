@@ -1,4 +1,4 @@
-/*! fg-enlarge - v0.0.1 - 2017-05-30
+/*! fg-enlarge - v0.1.0 - 2017-05-30
 * Copyright (c) 2017 Scott Jehl, Filament Group, Inc.; Licensed  */
 ;(function( w ){
 

@@ -1,4 +1,4 @@
-# Component Name
+# Enlarge Plugin
 
 Description
 
