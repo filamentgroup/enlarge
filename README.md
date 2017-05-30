@@ -27,7 +27,7 @@ jQuery(function($) {
 ```
 
 ## Demo
-Check the demo [here](http://filamentgroup.github.io/enlarge/)
+Check the demo [here](http://filamentgroup.github.io/enlarge/docs/)
 
 ## Release History
 v0.1.0 - First release
