@@ -2,6 +2,8 @@
 
 Description
 
+Note: early stages of maintenance. Demos, docs, tests, still being updated.
+
 ## Getting Started
 Download the [production version][min] or the [development version][max].
 
