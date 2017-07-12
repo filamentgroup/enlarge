@@ -1,4 +1,4 @@
-/*! fg-enlarge - v0.2.0 - 2017-05-30
+/*! fg-enlarge - v0.2.0 - 2017-07-12
 * Copyright (c) 2017 Scott Jehl, Filament Group, Inc.; Licensed  */
 ;(function( w ){
 
@@ -142,7 +142,7 @@
  						toggleImgSrc();
  					}
 
-					if( o.disabled && zoomed ) {
+					if( o.disabled && $element.data("zoomed") ) {
 						standardToggleZoom();
 					}
  				});
@@ -155,7 +155,7 @@
 
  				// zoom state toggle boolean
  				function toggleZoomState(){
- 					zoomed = !zoomed;
+ 					zoomed = !$element.data("zoomed");
  					$element.data("zoomed", zoomed);
  				}
 
@@ -223,7 +223,7 @@
 
  				// toggle magnification of image
  				function toggleImgZoom(){
- 					if( zoomed ){
+ 					if( $element.data("zoomed") ){
 						// NOTE we allow the image to zoom out if functionality gets disabled
 						// when it's in a zoomed state
 						if(o.disabled) { return false; }
@@ -264,8 +264,7 @@
  				// lock zoom mode toggle
  				function standardToggleZoom(){
 					// NOTE if the current is zoomed out and it's disabled prevent toggling
-					if(o.disabled && !zoomed) { return false; }
-
+					if(o.disabled && !$element.data("zoomed")) { return false; }
  					toggleZoomState();
  					toggleImgSrc();
  					toggleImgZoom();
