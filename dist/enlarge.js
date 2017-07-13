@@ -1,4 +1,4 @@
-/*! fg-enlarge - v0.2.0 - 2017-07-12
+/*! fg-enlarge - v0.2.2 - 2017-07-13
 * Copyright (c) 2017 Scott Jehl, Filament Group, Inc.; Licensed  */
 ;(function( w ){
 
@@ -169,6 +169,12 @@
  							targetImg.src = imgOriginalSrc;
  						}
  					} else {
+						// if the zooming is disabled do not replace with the larger source
+						// NOTE we don't prevent switching to the original source because we
+						// always want to allow the plugin to back out of the zoomed state
+						// when disabled
+						if( o.disabled ) { return false; }
+
  						var zoomimg = new Image();
  						zoomimg.className = "enlarge_img-loading";
  						$( zoomimg ).insertBefore( targetImg );
