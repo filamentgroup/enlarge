@@ -23,13 +23,28 @@
 
 	var $enlarge;
 
-	QUnit.module("enlarge", {
+	QUnit.module("markup");
+
+	QUnit.test("must have an anchor", function(assert){
+		assert.throws(function(){
+			$(".no-anchor-enlarge").enlarge();
+		});
+	});
+
+	QUnit.test("must have an container", function(assert){
+		assert.throws(function(){
+			$(".no-contain-enlarge").enlarge();
+		});
+	});
+
+	QUnit.module("exposed methods", {
 		before: function(){
 			$enlarge = $(".enlarge").enlarge();
 		}
 	});
 
-	QUnit.test("truth", function(assert){
-		assert.ok(true);
-	});
+	QUnit.todo("in", function(){});
+	QUnit.todo("out", function(){});
+	QUnit.todo("isZoomed", function(){});
+	QUnit.todo("updateOptions", function(){});
 }(jQuery));

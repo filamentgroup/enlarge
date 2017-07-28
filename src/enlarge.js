@@ -64,6 +64,10 @@
  				var lockedZoom = false;
  				var lockZoomClass = pluginName + "-locked";
 
+				if( !$contain.length ){
+					throw new Error(pluginName + ": requires an element above the image marked with the class `enlarge_contain`");
+				}
+
  				// this allows for methods and changing options in subsequent calls to the plugin
  				if( typeof options === "string" ) {
  					var args = Array.prototype.slice.call(pluginArgs, 1);
