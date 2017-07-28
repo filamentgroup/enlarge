@@ -174,37 +174,40 @@
  				// toggle the image source bigger or smaller
  				// ideally, this toggles the sizes attribute and allows the browser to select a new source from srcset
  				// if srcset isn't supported or sizes attribute is not provided, the link href is used for the larger source
- 				function toggleImgSrc(){
- 					if( !zoomed ){
- 						targetImg.sizes = imgOriginalSizes;
- 						if( !srcsetSizesSupported ){
- 							targetImg.src = imgOriginalSrc;
- 						}
- 					} else {
+				function toggleImgSrc(){
+					if( !zoomed ){
+						targetImg.sizes = imgOriginalSizes;
+						if( !srcsetSizesSupported ){
+							targetImg.src = imgOriginalSrc;
+						}
+					} else {
 						// if the zooming is disabled do not replace with the larger source
 						// NOTE we don't prevent switching to the original source because we
 						// always want to allow the plugin to back out of the zoomed state
 						// when disabled
 						if( o.disabled ) { return false; }
 
- 						var zoomimg = new Image();
- 						zoomimg.className = "enlarge_img-loading";
- 						$( zoomimg ).insertBefore( targetImg );
+						var zoomimg = new Image();
+						zoomimg.className = "enlarge_img-loading";
+						zoomimg.onload = function(){
+							targetImg.sizes = zoomimg.sizes;
+							if( !srcsetSizesSupported || !srcset ){
+								targetImg.src = imgZoomSrc;
+							}
+							$( zoomimg ).remove();
+						};
 
- 						zoomimg.onload = function(){
- 							targetImg.sizes = zoomimg.sizes;
- 							if( !srcsetSizesSupported ){
- 								targetImg.src = imgZoomSrc;
- 							}
- 							$( zoomimg ).remove();
- 						};
- 						zoomimg.sizes = imgZoomWidth() + "px";
- 						zoomimg.srcset = srcset;
- 						if( !srcsetSizesSupported ){
- 							zoomimg.src = imgZoomSrc;
- 						}
- 					}
- 				}
+						zoomimg.sizes = imgZoomWidth() + "px";
+
+						if( !srcsetSizesSupported || !srcset ){
+							zoomimg.src = imgZoomSrc;
+						} else if (srcset) {
+							zoomimg.srcset = srcset;
+						}
+
+						$( zoomimg ).insertBefore( targetImg );
+					}
+				}
 
  				// scroll to the center of the zoomed image
  				function scrollToCenter(){

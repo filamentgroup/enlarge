@@ -1,26 +1,4 @@
-/*global enlarge:true*/
 (function() {
-	/*
-		======== A Handy Little QUnit Reference ========
-		http://api.qunitjs.com/
-
-		Test methods:
-			module(name, {[setup][ ,teardown]})
-			test(name, callback)
-			expect(numberOfAssertions)
-			stop(increment)
-			start(decrement)
-		Test assertions:
-			ok(value, [message])
-			equal(actual, expected, [message])
-			notEqual(actual, expected, [message])
-			deepEqual(actual, expected, [message])
-			notDeepEqual(actual, expected, [message])
-			strictEqual(actual, expected, [message])
-			notStrictEqual(actual, expected, [message])
-			throws(block, [expected], [message])
-	*/
-
 	var $enlarge;
 
 	QUnit.module("markup");
@@ -43,8 +21,32 @@
 		}
 	});
 
-	QUnit.todo("in", function(){});
+	QUnit.test("isZoomed", function(assert){
+		assert.equal($enlarge.enlarge("isZoomed"), false);
+		$enlarge.enlarge("in");
+		assert.equal($enlarge.enlarge("isZoomed"), true);
+		$enlarge.enlarge("out");
+		assert.equal($enlarge.enlarge("isZoomed"), false);
+	});
+
+	QUnit.test("in/out", function(assert){
+		var done = assert.async();
+
+		var $img = $enlarge.find( "img" );
+
+		$enlarge.enlarge( "in" );
+
+		// TODO events
+		setTimeout(function(){
+			assert.ok($img.attr("src").indexOf("large-zoomed.jpg") >=0);
+			$enlarge.enlarge( "out" );
+			setTimeout(function(){
+				assert.ok($img.attr("src").indexOf("large-zoomed.jpg") >=0);
+				done();
+			},00);
+		},500);
+	});
+
 	QUnit.todo("out", function(){});
-	QUnit.todo("isZoomed", function(){});
 	QUnit.todo("updateOptions", function(){});
 }(jQuery));
