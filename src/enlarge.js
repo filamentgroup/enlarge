@@ -41,6 +41,10 @@
  				var srcsetSizesSupported = srcsetSupported && "sizes" in testimg;
  				var $anchor = $( this ).find( "a" );
 
+				if( !$anchor.length ){
+					throw new Error(pluginName + ": requires an anchor element with `href` for the enlarged image source");
+				}
+
  				// find image within container
  				var initialImg = $element.find( "img" )[ 0 ];
  				var targetImg = initialImg;
