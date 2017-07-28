@@ -5,19 +5,21 @@
 	<title>Test Suite</title>
 	<script src="../libs/jquery/jquery.js"></script>
 	<!-- Load local QUnit. -->
-	<link rel="stylesheet" href="../libs/qunit/qunit.css" media="screen">
-	<script src="../libs/qunit/qunit.js"></script>
+	<link rel="stylesheet" href="../node_modules/qunitjs/qunit/qunit.css" media="screen">
+	<script src="../node_modules/qunitjs/qunit/qunit.js"></script>
 	<!-- Load local lib and tests. -->
 	<script src="../src/enlarge.js"></script>
-	<script src="../src/enlarge-init.js"></script>
 	<script src="test.js"></script>
 </head>
 <body>
 	<div id="qunit"></div>
 	<div id="qunit-fixture">
-
-
-		<!-- markup -->
+		<div class="enlarge enlarge_pane">
+			<div class="enlarge_contain">
+				<img src="large.jpg"/>
+			</div>
+			<a href="large.jpg">Enhance!</a>
+		</div>
 	</div>
 	</div>
 </body>

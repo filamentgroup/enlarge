@@ -21,6 +21,15 @@
 			throws(block, [expected], [message])
 	*/
 
+	var $enlarge;
 
+	QUnit.module("enlarge", {
+		before: function(){
+			$enlarge = $(".enlarge").enlarge();
+		}
+	});
 
+	QUnit.test("truth", function(assert){
+		assert.ok(true);
+	});
 }(jQuery));
