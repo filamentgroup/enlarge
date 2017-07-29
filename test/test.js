@@ -47,6 +47,13 @@
 		},500);
 	});
 
-	QUnit.todo("out", function(){});
-	QUnit.todo("updateOptions", function(){});
+	QUnit.test("updateOptions", function(assert){
+		assert.equal($enlarge.enlarge("isZoomed"), false);
+		$enlarge.enlarge("updateOptions", {disabled: true});
+		$enlarge.enlarge("in");
+		assert.equal($enlarge.enlarge("isZoomed"), false);
+		$enlarge.enlarge("updateOptions", {disabled: false});
+		$enlarge.enlarge("in");
+		assert.equal($enlarge.enlarge("isZoomed"), true);
+	});
 }(jQuery));

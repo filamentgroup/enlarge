@@ -12,22 +12,23 @@
  		$.fn[ pluginName ] = function( options ){
  			var pluginArgs = arguments;
 
- 			// options
- 			var o = {
- 				button: true,
- 				hoverZoomWithoutClick: true,
- 				delay: 300,
- 				flyout: {
- 					width: 200,
- 					height: 200
- 				},
- 				placement: "inline",
- 				magnification: 3
- 			};
+			// options
+			var o = $(this).data("options") || {
+				button: true,
+				hoverZoomWithoutClick: true,
+				delay: 300,
+				flyout: {
+					width: 200,
+					height: 200
+				},
+				placement: "inline",
+				magnification: 3
+			};
 
- 			if( typeof options !== "string" ) {
- 				// extend with passed options
- 				o = $.extend( o, options );
+			if( typeof options !== "string" ) {
+				// extend with passed options
+				o = $.extend( o, options );
+				$(this).data("options", o);
  			}
 
  			var internalResult;
@@ -86,10 +87,10 @@
  					case "isZoomed":
  						internalResult = $element.data("zoomed");
  						break;
- 					case "updateOptions":
- 						$element.data( "updateUptions" )( args[ 0 ] );
- 						break;
- 					}
+					case "updateOptions":
+						$element.data( "updateOptions" )( args[ 0 ] );
+						break;
+					}
  					return;
  				}
 
@@ -144,20 +145,22 @@
 
  				// this allows for subsequent calls to the plugin to pass an updateOptions method and object,
  				// which will pass through to the existing viewer on that element
- 				$element.data( "updateUptions", function( opts ){
- 					o = opts;
- 					updatePlacement();
- 					positionFlyout();
- 					hoverEnabled = o.hoverZoomWithoutClick;
- 					if( o.image.sizes ){
- 						imgOriginalSizes = o.image.sizes;
- 						toggleImgSrc();
- 					}
+				$element.data( "updateOptions", function( opts ){
+					o = $.extend( o, opts );
+					$(this).data("options", o);
+
+					updatePlacement();
+					positionFlyout();
+					hoverEnabled = o.hoverZoomWithoutClick;
+					if( o.image && o.image.sizes ){
+						imgOriginalSizes = o.image.sizes;
+						toggleImgSrc();
+					}
 
 					if( o.disabled && $element.data("zoomed") ) {
 						standardToggleZoom();
 					}
- 				});
+				});
 
  				// loader div holds a new image while its new source is loading
  				// we insert this into the dom so that srcset/sizes can calculate a best source
