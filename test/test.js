@@ -57,8 +57,8 @@
 		assert.equal($enlarge.enlarge("isZoomed"), true);
 	});
 
-	QUnit.module("internal methods", {
-		before: function(){
+	QUnit.module("internal methods/functionality", {
+		beforeEach: function(){
 			$enlarge = $(".enlarge").enlarge();
 		}
 	});
@@ -88,5 +88,32 @@
 		});
 
 		$enlarge.enlarge("in");
+	});
+
+	QUnit.test("tracking delay", function(assert){
+		var delay = 1000;
+		var done = assert.async();
+		$enlarge.enlarge( "updateOptions", {delay: delay});
+
+		// delay - 100ms after triggering mouseenter, should not be zoomed
+		setTimeout(function(){
+			assert.ok(!$enlarge.is(".enlarge-zoomed"), "before tracking delay");
+		}, delay - 100);
+
+		// delay + 100ms after triggering mouseenter, should be zoomed
+		setTimeout(function(){
+			assert.ok($enlarge.is(".enlarge-zoomed"), "after tracking delay");
+		}, delay + 100);
+
+		// wait until the tracking delay zoom in fires
+		$enlarge.one("enlarge.after-zoom-in", function(){
+			setTimeout(done, 200);
+		});
+
+		assert.ok(!$enlarge.is(".enlarge-zoomed"), "before trigger");
+		$enlarge.find("img").trigger("mouseenter");
+
+		// immediately after triggering mouseenter, should not be zoomed
+		assert.ok(!$enlarge.is(".enlarge-zoomed"), "after trigger");
 	});
 }(jQuery));
