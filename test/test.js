@@ -116,4 +116,28 @@
 		// immediately after triggering mouseenter, should not be zoomed
 		assert.ok(!$enlarge.is(".enlarge-zoomed"), "after trigger");
 	});
+
+	QUnit.test("stop tracking delay", function(assert){
+		var delay = 1000;
+		var done = assert.async();
+		$enlarge.enlarge( "updateOptions", {delay: delay});
+
+		// delay - 100ms after triggering mouseenter, should not be zoomed
+		setTimeout(function(){
+			assert.ok(!$enlarge.is(".enlarge-zoomed"), "before tracking delay");
+			$enlarge.find("img").trigger("mouseleave");
+		}, delay / 2);
+
+		// delay + 100ms after triggering mouseenter, should not be zoomed
+		setTimeout(function(){
+			assert.ok(!$enlarge.is(".enlarge-zoomed"), "after tracking delay");
+			done();
+		}, delay + 200);
+
+		assert.ok(!$enlarge.is(".enlarge-zoomed"), "before trigger");
+		$enlarge.find("img").trigger("mouseenter");
+
+		// immediately after triggering mouseenter, should not be zoomed
+		assert.ok(!$enlarge.is(".enlarge-zoomed"), "after trigger");
+	});
 }(jQuery));
