@@ -70,6 +70,7 @@
 
 		$enlarge.one("enlarge.after-zoom-in", function(){
 			assert.ok($enlarge.is(".enlarge-zoomed"));
+			assert.equal($enlarge.find("img").css("width"), "3000px");
 
 			$enlarge.one("enlarge.after-zoom-out", function(){
 				assert.ok(!$enlarge.is(".enlarge-zoomed"));
