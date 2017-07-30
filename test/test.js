@@ -56,4 +56,36 @@
 		$enlarge.enlarge("in");
 		assert.equal($enlarge.enlarge("isZoomed"), true);
 	});
+
+	QUnit.module("internal methods", {
+		before: function(){
+			$enlarge = $(".enlarge").enlarge();
+		}
+	});
+
+	QUnit.test("toggleImgZoom", function(assert){
+		var done = assert.async();
+
+		var $img = $enlarge.find("img");
+
+		$enlarge.one("enlarge.after-zoom-in", function(){
+			assert.ok($enlarge.is(".enlarge-zoomed"));
+
+			$enlarge.one("enlarge.after-zoom-out", function(){
+				assert.ok(!$enlarge.is(".enlarge-zoomed"));
+				$enlarge.enlarge("updateOptions", { magnification: 4 });
+
+				$enlarge.one("enlarge.after-zoom-in", function(){
+					assert.equal($enlarge.find("img").css("width"), "4000px");
+					done();
+				});
+
+				$enlarge.enlarge("in");
+			});
+
+			$enlarge.enlarge("out");
+		});
+
+		$enlarge.enlarge("in");
+	});
 }(jQuery));

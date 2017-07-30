@@ -177,18 +177,21 @@
  				// toggle the image source bigger or smaller
  				// ideally, this toggles the sizes attribute and allows the browser to select a new source from srcset
  				// if srcset isn't supported or sizes attribute is not provided, the link href is used for the larger source
-				function toggleImgSrc(){
+				function toggleImgSrc(after){
+					after = after || function(){};
+
 					if( !zoomed ){
 						targetImg.sizes = imgOriginalSizes;
 						if( !srcsetSizesSupported ){
 							targetImg.src = imgOriginalSrc;
 						}
+						after();
 					} else {
 						// if the zooming is disabled do not replace with the larger source
 						// NOTE we don't prevent switching to the original source because we
 						// always want to allow the plugin to back out of the zoomed state
 						// when disabled
-						if( o.disabled ) { return false; }
+						if( o.disabled ) { after(); return false; }
 
 						var zoomimg = new Image();
 						zoomimg.className = "enlarge_img-loading";
@@ -198,6 +201,8 @@
 								targetImg.src = imgZoomSrc;
 							}
 							$( zoomimg ).remove();
+
+							after();
 						};
 
 						zoomimg.sizes = imgZoomWidth() + "px";
@@ -290,11 +295,12 @@
 					// NOTE if the current is zoomed out and it's disabled prevent toggling
 					if(o.disabled && !$element.data("zoomed")) { return false; }
  					toggleZoomState();
- 					toggleImgSrc();
- 					toggleImgZoom();
- 					scrollToCenter();
- 					toggleLockZoom();
- 				}
+					toggleImgSrc(function(){
+						toggleImgZoom();
+						scrollToCenter();
+						toggleLockZoom();
+					});
+				}
 
  				var trackingOn;
  				var trackingTimer;
@@ -318,12 +324,12 @@
  						trackingTimer = setTimeout( function(){
  							$contain.removeClass( delayClass );
  							toggleZoomState();
- 							toggleImgZoom();
- 							toggleImgSrc();
- 							trackingOn = true;
- 							scrollWithMouse(e);
-
- 						}, o.delay );
+							toggleImgSrc(function(){
+								toggleImgZoom();
+								trackingOn = true;
+								scrollWithMouse(e);
+							});
+						}, o.delay );
  				}
 
  				// mouseleave or touchend after a drag
@@ -433,8 +439,9 @@
  						mouseEntered = false;
  						if( zoomed && !lockedZoom ){
  							toggleZoomState();
- 							toggleImgSrc();
- 							toggleImgZoom();
+							toggleImgSrc(function(){
+								toggleImgZoom();
+							});
  						}
  						stopTrackingDelay( e );
  					})
@@ -481,12 +488,13 @@
  				$parentPane.bind( "scroll", function(){
  					if( zoomed ){
  						toggleZoomState();
- 						toggleImgSrc();
- 						toggleImgZoom();
- 					}
- 					if( lockedZoom ){
- 						toggleLockZoom();
- 					}
+						toggleImgSrc(function(){
+							toggleImgZoom();
+						});
+					}
+					if( lockedZoom ){
+						toggleLockZoom();
+					}
  				});
  			});
 
