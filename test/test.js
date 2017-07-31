@@ -192,9 +192,8 @@
 				$enlarge.one("enlarge.after-zoom-in", function(){
 					// flyout is not used for zoom
 					assert.ok(!$(document).find(".enlarge_flyout").is(".enlarge-zoomed"));
+					assert.ok($enlarge.is(".enlarge-zoomed"));
 
-					// state is correct
-					assert.equal($enlarge.enlarge("isZoomed"), true);
 					done();
 				});
 
