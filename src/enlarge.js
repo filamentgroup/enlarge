@@ -62,7 +62,9 @@
  				var $zoomParent = $parentPane;
  				var zoomed = $element.data("zoomed") || false;
  				$element.data("zoomed", zoomed);
- 				var lockedZoom = false;
+
+				$element.data("lockedZoom", $element.data("lockedZoom") || false);
+
  				var lockZoomClass = pluginName + "-locked";
 
 				if( !$contain.length ){
@@ -229,19 +231,19 @@
 
  				// lock zoom mode allows for scrolling around normally without a cursor-follow behavior
  				function toggleLockZoom(){
- 					if( !lockedZoom ){
+ 					if( !$element.data("lockedZoom") ){
 						// NOTE we allow the image to zoom out if functionality gets disabled
 						// when it's in a zoomed state
 						if(o.disabled) { return false; }
 
  						$parentPane.add( $zoomParent ).addClass( lockZoomClass );
- 						lockedZoom = true;
+ 						$element.data("lockedZoom", lockedZoom = true);
  						$zoomContain.attr( "tabindex", "0" );
  						$zoomContain[ 0 ].focus();
  					}
  					else {
  						$parentPane.add( $zoomParent ).removeClass( lockZoomClass );
- 						lockedZoom = false;
+ 						$element.data("lockedZoom", lockedZoom = false);
  						$zoomContain.removeAttr( "tabindex" );
  					}
  				}
@@ -296,9 +298,9 @@
 					if(o.disabled && !$element.data("zoomed")) { return false; }
  					toggleZoomState();
 					toggleImgSrc(function(){
+						toggleLockZoom();
 						toggleImgZoom();
 						scrollToCenter();
-						toggleLockZoom();
 					});
 				}
 
@@ -315,7 +317,7 @@
  						}
  						if( touchStarted && e.type === "mouseenter" ||
  						 	e.type === "mouseenter" && !touchStarted && !hoverEnabled ||
- 							lockedZoom ||
+ 							$element.data("lockedZoom") ||
  							mouseEntered ){
  							return;
  						}
@@ -418,7 +420,7 @@
  				// on resize, if in lock zoom mode, un zoom
  				$( w )
  					.bind( "resize", function( e ){
- 						if( lockedZoom ){
+ 						if( $element.data("lockedZoom") ){
  							standardToggleZoom();
  						}
  					});
@@ -426,7 +428,7 @@
  				// on click-out on the page, if in locked zoom mode, zoom out
  				$( w.document )
  					.bind( "mouseup", function( e ){
- 						if( lockedZoom && !$( e.target ).closest( $parentPane ).length ){
+ 						if( $element.data("lockedZoom") && !$( e.target ).closest( $parentPane ).length ){
  							standardToggleZoom();
  						}
  					});
@@ -437,7 +439,7 @@
  					.bind( "mousemove touchmove", scrollWithMouse )
  					.bind( "mouseleave touchend", function( e ){
  						mouseEntered = false;
- 						if( zoomed && !lockedZoom ){
+ 						if( zoomed && !$element.data("lockedZoom") ){
  							toggleZoomState();
 							toggleImgSrc(function(){
 								toggleImgZoom();
@@ -474,26 +476,26 @@
  							e.keyCode === 39 ||
  							e.keyCode === 40 ){
  								e.stopImmediatePropagation();
- 								if( !lockedZoom ){
+ 								if( !$element.data("lockedZoom") ){
  									e.preventDefault();
  								}
- 					} else if( e.type === "keyup" && lockedZoom && e.keyCode === 27 ){ //esc or backspace closes zoom
+ 					} else if( e.type === "keyup" && $(this).data("lockedZoom") && e.keyCode === 27 ){ //esc or backspace closes zoom
  						standardToggleZoom();
  						$anchor[0].focus();
  						e.stopImmediatePropagation();
  					}
- 				} );
+ 				});
 
  				// on scroll, zoom out
  				$parentPane.bind( "scroll", function(){
  					if( zoomed ){
  						toggleZoomState();
 						toggleImgSrc(function(){
+							if( $element.data("lockedZoom") ){
+								toggleLockZoom();
+							}
 							toggleImgZoom();
 						});
-					}
-					if( lockedZoom ){
-						toggleLockZoom();
 					}
  				});
  			});

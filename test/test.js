@@ -140,4 +140,24 @@
 		// immediately after triggering mouseenter, should not be zoomed
 		assert.ok(!$enlarge.is(".enlarge-zoomed"), "after trigger");
 	});
+
+
+	QUnit.test("esc zooms out", function(assert){
+		var done = assert.async();
+		$enlarge.one("enlarge.after-zoom-in", function(){
+			var event = $.Event("keyup");
+			event.keyCode = 27;
+			assert.equal($enlarge.enlarge("isZoomed"), true);
+
+			$enlarge.one("enlarge.after-zoom-out", function(){
+				assert.equal($enlarge.enlarge("isZoomed"), false);
+				done();
+			});
+
+			$enlarge.trigger(event);
+		});
+
+		$enlarge.enlarge("in");
+	});
+
 }(jQuery));
