@@ -213,4 +213,24 @@
 		$enlarge.enlarge("in");
 	});
 
+	QUnit.test("scrolling parent pane zooms out", function(assert){
+		assert.expect(1);
+		var done = assert.async();
+
+		$enlarge.one("enlarge.after-zoom-in", function(){
+
+			$enlarge.one("enlarge.after-zoom-out", function(){
+				// zoom back out to test forced inline
+				assert.equal($enlarge.enlarge("isZoomed"), false);
+				done();
+
+			});
+
+			$enlarge.trigger("scroll");
+		});
+
+		// zoom in
+		$enlarge.enlarge("in");
+	});
+
 }(jQuery));

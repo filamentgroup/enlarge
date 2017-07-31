@@ -493,7 +493,7 @@
 
  				// on scroll, zoom out
  				$parentPane.bind( "scroll", function(){
- 					if( zoomed ){
+ 					if( $element.data("zoomed") ){
  						toggleZoomState();
 						toggleImgSrc(function(){
 							if( $element.data("lockedZoom") ){
