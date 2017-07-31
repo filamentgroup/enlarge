@@ -59,7 +59,10 @@
  				var $contain = $( targetImg ).closest( ".enlarge_contain" );
  				var $zoomContain = $contain;
  				var $parentPane = $( targetImg ).closest( ".enlarge_pane" ) || $element;
- 				var $zoomParent = $parentPane;
+
+				var $zoomParent = $(this).data("zoomParent") || $parentPane;
+				$(this).data("zoomParent", $zoomParent);
+
  				var zoomed = $element.data("zoomed") || false;
  				$element.data("zoomed", zoomed);
 
@@ -102,10 +105,12 @@
  					if( o.placement === "inline" ){
  						targetImg = initialImg;
  						$zoomParent = $parentPane;
+						$element.data("zoomParent", $zoomParent);
  						$zoomContain = $contain;
  					} else {
  						targetImg = $flyout.find( "img" )[ 0 ];
  						$zoomParent = $zoomContain = $flyout;
+						$element.data("zoomParent", $zoomParent);
  					}
  				}
 

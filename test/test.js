@@ -177,4 +177,41 @@
 		$enlarge.find("img").trigger("touchstart");
 		$enlarge.find("img").trigger("click");
 	});
+
+	QUnit.test("spacebar on link forces inline", function(assert){
+		var done = assert.async();
+		var $flyout = $enlarge.find(".enlarge_flyout");
+
+		$enlarge.one("enlarge.after-zoom-in", function(){
+			// flyout is used for zoom because it is placement "left"
+			assert.ok($(document).find(".enlarge_flyout").is(".enlarge-zoomed"));
+
+			$enlarge.one("enlarge.after-zoom-out", function(){
+				// zoom back out to test forced inline
+
+				$enlarge.one("enlarge.after-zoom-in", function(){
+					// flyout is not used for zoom
+					assert.ok(!$(document).find(".enlarge_flyout").is(".enlarge-zoomed"));
+
+					// state is correct
+					assert.equal($enlarge.enlarge("isZoomed"), true);
+					done();
+				});
+
+				// trigger spacebar to force inline mode
+				var e = $.Event("keydown");
+				e.keyCode = 32;
+				$enlarge.find("a").trigger(e);
+			});
+
+			$enlarge.enlarge("out");
+		});
+
+		// force the magnifier to placement left
+		$enlarge.enlarge("updateOptions", {placement: "left"});
+
+		// zoom in
+		$enlarge.enlarge("in");
+	});
+
 }(jQuery));
