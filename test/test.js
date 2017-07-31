@@ -141,7 +141,6 @@
 		assert.ok(!$enlarge.is(".enlarge-zoomed"), "after trigger");
 	});
 
-
 	QUnit.test("esc zooms out", function(assert){
 		var done = assert.async();
 		$enlarge.one("enlarge.after-zoom-in", function(){
@@ -160,4 +159,22 @@
 		$enlarge.enlarge("in");
 	});
 
+	QUnit.test("touch without drag zooms", function(assert){
+		var done = assert.async();
+
+		$enlarge.one("enlarge.after-zoom-in", function(){
+			assert.equal($enlarge.enlarge("isZoomed"), true);
+
+			$enlarge.one("enlarge.after-zoom-out", function(){
+				assert.equal($enlarge.enlarge("isZoomed"), false);
+				done();
+			});
+
+			$enlarge.find("img").trigger("touchstart");
+			$enlarge.find("img").trigger("click");
+		});
+
+		$enlarge.find("img").trigger("touchstart");
+		$enlarge.find("img").trigger("click");
+	});
 }(jQuery));
