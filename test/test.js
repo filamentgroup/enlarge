@@ -179,6 +179,7 @@
 	});
 
 	QUnit.test("spacebar on link forces inline", function(assert){
+		assert.expect(3);
 		var done = assert.async();
 		var $flyout = $enlarge.find(".enlarge_flyout");
 
