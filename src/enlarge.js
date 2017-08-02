@@ -12,22 +12,23 @@
  		$.fn[ pluginName ] = function( options ){
  			var pluginArgs = arguments;
 
- 			// options
- 			var o = {
- 				button: true,
- 				hoverZoomWithoutClick: true,
- 				delay: 300,
- 				flyout: {
- 					width: 200,
- 					height: 200
- 				},
- 				placement: "inline",
- 				magnification: 3
- 			};
+			// options
+			var o = $(this).data("options") || {
+				button: true,
+				hoverZoomWithoutClick: true,
+				delay: 300,
+				flyout: {
+					width: 200,
+					height: 200
+				},
+				placement: "inline",
+				magnification: 3
+			};
 
- 			if( typeof options !== "string" ) {
- 				// extend with passed options
- 				o = $.extend( o, options );
+			if( typeof options !== "string" ) {
+				// extend with passed options
+				o = $.extend( o, options );
+				$(this).data("options", o);
  			}
 
  			var internalResult;
@@ -40,6 +41,10 @@
  				var srcsetSupported = "srcset" in testimg;
  				var srcsetSizesSupported = srcsetSupported && "sizes" in testimg;
  				var $anchor = $( this ).find( "a" );
+
+				if( !$anchor.length ){
+					throw new Error(pluginName + ": requires an anchor element with `href` for the enlarged image source");
+				}
 
  				// find image within container
  				var initialImg = $element.find( "img" )[ 0 ];
@@ -54,11 +59,20 @@
  				var $contain = $( targetImg ).closest( ".enlarge_contain" );
  				var $zoomContain = $contain;
  				var $parentPane = $( targetImg ).closest( ".enlarge_pane" ) || $element;
- 				var $zoomParent = $parentPane;
+
+				var $zoomParent = $(this).data("zoomParent") || $parentPane;
+				$(this).data("zoomParent", $zoomParent);
+
  				var zoomed = $element.data("zoomed") || false;
  				$element.data("zoomed", zoomed);
- 				var lockedZoom = false;
+
+				$element.data("lockedZoom", $element.data("lockedZoom") || false);
+
  				var lockZoomClass = pluginName + "-locked";
+
+				if( !$contain.length ){
+					throw new Error(pluginName + ": requires an element above the image marked with the class `enlarge_contain`");
+				}
 
  				// this allows for methods and changing options in subsequent calls to the plugin
  				if( typeof options === "string" ) {
@@ -78,10 +92,10 @@
  					case "isZoomed":
  						internalResult = $element.data("zoomed");
  						break;
- 					case "updateOptions":
- 						$element.data( "updateUptions" )( args[ 0 ] );
- 						break;
- 					}
+					case "updateOptions":
+						$element.data( "updateOptions" )( args[ 0 ] );
+						break;
+					}
  					return;
  				}
 
@@ -91,10 +105,12 @@
  					if( o.placement === "inline" ){
  						targetImg = initialImg;
  						$zoomParent = $parentPane;
+						$element.data("zoomParent", $zoomParent);
  						$zoomContain = $contain;
  					} else {
  						targetImg = $flyout.find( "img" )[ 0 ];
  						$zoomParent = $zoomContain = $flyout;
+						$element.data("zoomParent", $zoomParent);
  					}
  				}
 
@@ -136,20 +152,22 @@
 
  				// this allows for subsequent calls to the plugin to pass an updateOptions method and object,
  				// which will pass through to the existing viewer on that element
- 				$element.data( "updateUptions", function( opts ){
- 					o = opts;
- 					updatePlacement();
- 					positionFlyout();
- 					hoverEnabled = o.hoverZoomWithoutClick;
- 					if( o.image.sizes ){
- 						imgOriginalSizes = o.image.sizes;
- 						toggleImgSrc();
- 					}
+				$element.data( "updateOptions", function( opts ){
+					o = $.extend( o, opts );
+					$(this).data("options", o);
+
+					updatePlacement();
+					positionFlyout();
+					hoverEnabled = o.hoverZoomWithoutClick;
+					if( o.image && o.image.sizes ){
+						imgOriginalSizes = o.image.sizes;
+						toggleImgSrc();
+					}
 
 					if( o.disabled && $element.data("zoomed") ) {
 						standardToggleZoom();
 					}
- 				});
+				});
 
  				// loader div holds a new image while its new source is loading
  				// we insert this into the dom so that srcset/sizes can calculate a best source
@@ -166,37 +184,45 @@
  				// toggle the image source bigger or smaller
  				// ideally, this toggles the sizes attribute and allows the browser to select a new source from srcset
  				// if srcset isn't supported or sizes attribute is not provided, the link href is used for the larger source
- 				function toggleImgSrc(){
- 					if( !zoomed ){
- 						targetImg.sizes = imgOriginalSizes;
- 						if( !srcsetSizesSupported ){
- 							targetImg.src = imgOriginalSrc;
- 						}
- 					} else {
+				function toggleImgSrc(after){
+					after = after || function(){};
+
+					if( !zoomed ){
+						targetImg.sizes = imgOriginalSizes;
+						if( !srcsetSizesSupported ){
+							targetImg.src = imgOriginalSrc;
+						}
+						after();
+					} else {
 						// if the zooming is disabled do not replace with the larger source
 						// NOTE we don't prevent switching to the original source because we
 						// always want to allow the plugin to back out of the zoomed state
 						// when disabled
-						if( o.disabled ) { return false; }
+						if( o.disabled ) { after(); return false; }
 
- 						var zoomimg = new Image();
- 						zoomimg.className = "enlarge_img-loading";
- 						$( zoomimg ).insertBefore( targetImg );
+						var zoomimg = new Image();
+						zoomimg.className = "enlarge_img-loading";
+						zoomimg.onload = function(){
+							targetImg.sizes = zoomimg.sizes;
+							if( !srcsetSizesSupported || !srcset ){
+								targetImg.src = imgZoomSrc;
+							}
+							$( zoomimg ).remove();
 
- 						zoomimg.onload = function(){
- 							targetImg.sizes = zoomimg.sizes;
- 							if( !srcsetSizesSupported ){
- 								targetImg.src = imgZoomSrc;
- 							}
- 							$( zoomimg ).remove();
- 						};
- 						zoomimg.sizes = imgZoomWidth() + "px";
- 						zoomimg.srcset = srcset;
- 						if( !srcsetSizesSupported ){
- 							zoomimg.src = imgZoomSrc;
- 						}
- 					}
- 				}
+							after();
+						};
+
+						zoomimg.sizes = imgZoomWidth() + "px";
+
+						if( !srcsetSizesSupported || !srcset ){
+							zoomimg.src = imgZoomSrc;
+						} else if (srcset) {
+							zoomimg.srcset = srcset;
+						}
+
+						$( zoomimg ).insertBefore( targetImg );
+					}
+				}
 
  				// scroll to the center of the zoomed image
  				function scrollToCenter(){
@@ -210,19 +236,19 @@
 
  				// lock zoom mode allows for scrolling around normally without a cursor-follow behavior
  				function toggleLockZoom(){
- 					if( !lockedZoom ){
+ 					if( !$element.data("lockedZoom") ){
 						// NOTE we allow the image to zoom out if functionality gets disabled
 						// when it's in a zoomed state
 						if(o.disabled) { return false; }
 
  						$parentPane.add( $zoomParent ).addClass( lockZoomClass );
- 						lockedZoom = true;
+ 						$element.data("lockedZoom", lockedZoom = true);
  						$zoomContain.attr( "tabindex", "0" );
  						$zoomContain[ 0 ].focus();
  					}
  					else {
  						$parentPane.add( $zoomParent ).removeClass( lockZoomClass );
- 						lockedZoom = false;
+ 						$element.data("lockedZoom", lockedZoom = false);
  						$zoomContain.removeAttr( "tabindex" );
  					}
  				}
@@ -276,11 +302,12 @@
 					// NOTE if the current is zoomed out and it's disabled prevent toggling
 					if(o.disabled && !$element.data("zoomed")) { return false; }
  					toggleZoomState();
- 					toggleImgSrc();
- 					toggleImgZoom();
- 					scrollToCenter();
- 					toggleLockZoom();
- 				}
+					toggleImgSrc(function(){
+						toggleLockZoom();
+						toggleImgZoom();
+						scrollToCenter();
+					});
+				}
 
  				var trackingOn;
  				var trackingTimer;
@@ -295,7 +322,7 @@
  						}
  						if( touchStarted && e.type === "mouseenter" ||
  						 	e.type === "mouseenter" && !touchStarted && !hoverEnabled ||
- 							lockedZoom ||
+ 							$element.data("lockedZoom") ||
  							mouseEntered ){
  							return;
  						}
@@ -304,12 +331,12 @@
  						trackingTimer = setTimeout( function(){
  							$contain.removeClass( delayClass );
  							toggleZoomState();
- 							toggleImgZoom();
- 							toggleImgSrc();
- 							trackingOn = true;
- 							scrollWithMouse(e);
-
- 						}, o.delay );
+							toggleImgSrc(function(){
+								toggleImgZoom();
+								trackingOn = true;
+								scrollWithMouse(e);
+							});
+						}, o.delay );
  				}
 
  				// mouseleave or touchend after a drag
@@ -398,7 +425,7 @@
  				// on resize, if in lock zoom mode, un zoom
  				$( w )
  					.bind( "resize", function( e ){
- 						if( lockedZoom ){
+ 						if( $element.data("lockedZoom") ){
  							standardToggleZoom();
  						}
  					});
@@ -406,7 +433,7 @@
  				// on click-out on the page, if in locked zoom mode, zoom out
  				$( w.document )
  					.bind( "mouseup", function( e ){
- 						if( lockedZoom && !$( e.target ).closest( $parentPane ).length ){
+ 						if( $element.data("lockedZoom") && !$( e.target ).closest( $parentPane ).length ){
  							standardToggleZoom();
  						}
  					});
@@ -417,10 +444,11 @@
  					.bind( "mousemove touchmove", scrollWithMouse )
  					.bind( "mouseleave touchend", function( e ){
  						mouseEntered = false;
- 						if( zoomed && !lockedZoom ){
+ 						if( zoomed && !$element.data("lockedZoom") ){
  							toggleZoomState();
- 							toggleImgSrc();
- 							toggleImgZoom();
+							toggleImgSrc(function(){
+								toggleImgZoom();
+							});
  						}
  						stopTrackingDelay( e );
  					})
@@ -453,26 +481,27 @@
  							e.keyCode === 39 ||
  							e.keyCode === 40 ){
  								e.stopImmediatePropagation();
- 								if( !lockedZoom ){
+ 								if( !$element.data("lockedZoom") ){
  									e.preventDefault();
  								}
- 					} else if( e.type === "keyup" && lockedZoom && e.keyCode === 27 ){ //esc or backspace closes zoom
+ 					} else if( e.type === "keyup" && $(this).data("lockedZoom") && e.keyCode === 27 ){ //esc or backspace closes zoom
  						standardToggleZoom();
  						$anchor[0].focus();
  						e.stopImmediatePropagation();
  					}
- 				} );
+ 				});
 
  				// on scroll, zoom out
  				$parentPane.bind( "scroll", function(){
- 					if( zoomed ){
+ 					if( $element.data("zoomed") ){
  						toggleZoomState();
- 						toggleImgSrc();
- 						toggleImgZoom();
- 					}
- 					if( lockedZoom ){
- 						toggleLockZoom();
- 					}
+						toggleImgSrc(function(){
+							if( $element.data("lockedZoom") ){
+								toggleLockZoom();
+							}
+							toggleImgZoom();
+						});
+					}
  				});
  			});
 
