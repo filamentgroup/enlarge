@@ -26,7 +26,7 @@
 .enlarge_btn:active {
 
 }
-.disabled .enlarge_btn {
+.enlarge_disabled .enlarge_btn {
 	display: none;
 }
 .zoom-out {

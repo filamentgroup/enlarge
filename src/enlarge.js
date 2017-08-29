@@ -151,9 +151,9 @@
 
 				function disable(){
 					if(o.disabled){
-						$element.addClass("disabled");
+						$element.addClass("enlarge_disabled");
 					} else {
-						$element.removeClass("disabled");
+						$element.removeClass("enlarge_disabled");
 					}
 				}
 
