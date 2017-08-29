@@ -149,6 +149,16 @@
 					$flyout.addClass( "enlarge_flyout-" +	 o.placement );
 				}
 
+				function disable(){
+					if(o.disabled){
+						$element.addClass("disabled");
+					} else {
+						$element.removeClass("disabled");
+					}
+				}
+
+				disable();
+
 				// this allows for subsequent calls to the plugin to pass an updateOptions method and object,
 				// which will pass through to the existing viewer on that element
 				$element.data( "updateOptions", function( opts ){
@@ -162,6 +172,8 @@
 						imgOriginalSizes = o.image.sizes;
 						toggleImgSrc();
 					}
+
+					disable();
 
 					if( o.disabled && $element.data("zoomed") ) {
 						standardToggleZoom();
