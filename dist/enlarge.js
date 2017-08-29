@@ -1,4 +1,4 @@
-/*! fg-enlarge - v0.2.2 - 2017-08-29
+/*! fg-enlarge - v0.3.0 - 2017-08-29
 * Copyright (c) 2017 Scott Jehl, Filament Group, Inc.; Licensed  */
 ;(function( w ){
 	var enlarge = function(){
@@ -147,9 +147,9 @@
 
 				function disable(){
 					if(o.disabled){
-						$element.addClass("disabled");
+						$element.addClass("enlarge_disabled");
 					} else {
-						$element.removeClass("disabled");
+						$element.removeClass("enlarge_disabled");
 					}
 				}
 
