@@ -16,18 +16,23 @@
 				max-width: 600px;
 				margin: 50px auto;
 			}
+			.enlarge_btn {
+				display: none;
+			}
 		</style>
 	</head>
 	<body>
 
-	<div class="enlarge_pane">
-		<div class="enlarge">
-			<div class="enlarge_contain">
-				<img src="imgs/bike.jpg" srcset="imgs/bike.jpg " sizes="100vw" alt="" id="test-img">
-			</div>
-			<a href="imgs/bike.jpg" class="enlarge_btn" title="Toggle Zoom">Toggle Zoom</a>
-		</div>
 
+	<div class="enlarge_pane_contain">
+		<div class="enlarge_pane">
+			<div class="enlarge">
+				<div class="enlarge_contain">
+					<img src="imgs/bike.jpg" srcset="imgs/bike.jpg 480w, imgs/bike-1200.jpg 1200w, imgs/bike-2000.jpg 2000w" sizes="100vw" alt="" id="test-img">
+				</div>
+				<a href="imgs/bike.jpg" class="enlarge_btn" title="Toggle Zoom">Toggle Zoom</a>
+			</div>
+		</div>
 	</div>
 
 
