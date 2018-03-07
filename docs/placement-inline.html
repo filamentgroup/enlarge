@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Enlarge Examples</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<style>
+			body {
+				font-family: sans-serif;
+			}
+
+		</style>
+		<link rel="stylesheet" href="../src/enlarge.css" />
+		<style>
+			body {
+				max-width: 600px;
+				margin: 50px auto;
+			}
+		</style>
+	</head>
+	<body>
+
+	<div class="enlarge_pane">
+		<div class="enlarge" data-placement="inline">
+			<div class="enlarge_contain">
+				<img src="imgs/bike.jpg" srcset="imgs/bike.jpg " sizes="100vw" alt="" id="test-img">
+			</div>
+			<a href="imgs/bike.jpg" class="enlarge_btn" title="Toggle Zoom">Toggle Zoom</a>
+		</div>
+
+	</div>
+
+
+		<!-- normally you would concatenate these -->
+		<script src="../libs/jquery/jquery.js"></script>
+		<script src="../src/enlarge.js"></script>
+		<script src="../src/enlarge.init.js"></script>
+		<script src="init.js"></script>
+	</body>
+</html>
