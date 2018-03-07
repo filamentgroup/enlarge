@@ -17,10 +17,10 @@
 				hoverZoomWithoutClick: true,
 				delay: 300,
 				flyout: {
-					width: 200,
-					height: 200
+					width: 300,
+					height: 300
 				},
-				placement: "inline",
+				placement: "flyoutloupe",
 				magnification: 3
 			};
 

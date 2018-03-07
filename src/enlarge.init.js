@@ -13,7 +13,7 @@
 
 	// auto-init on enhance (which is called on domready)
 	$( document ).bind( "enhance", function( e ){
-		$( initSelector, e.target )[ pluginName ]({placement: "flyoutloupe", flyout: { width: 300, height: 300 }, magnification: 5});
+		$( initSelector, e.target )[ pluginName ]();
 	});
 
 }( jQuery, this ));
