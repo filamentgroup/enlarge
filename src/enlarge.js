@@ -374,7 +374,7 @@
 							return;
 						}
 						// normalize ev to touch or mouse
-						var oe = e.originalEvent;
+						var oe = e.originalEvent || e;
 						var ev = oe.touches ? oe.touches[ 0 ] : oe;
 						e.preventDefault();
 						var x = ev.clientX - $contain[ 0 ].getBoundingClientRect().left;
