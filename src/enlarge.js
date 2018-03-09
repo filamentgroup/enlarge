@@ -9,6 +9,7 @@
 		var $ = w.jQuery;
 		var pluginName = "enlarge";
 		$.fn[ pluginName ] = function( options ){
+
 			var pluginArgs = arguments;
 
 			// options
@@ -373,15 +374,16 @@
 							return;
 						}
 						// normalize ev to touch or mouse
-						var ev = e.touches ? e.touches[ 0 ] : e;
+						var oe = e.originalEvent;
+						var ev = oe.touches ? oe.touches[ 0 ] : oe;
 						e.preventDefault();
 						var x = ev.clientX - $contain[ 0 ].getBoundingClientRect().left;
 						var y = ev.clientY - $contain[ 0 ].getBoundingClientRect().top;
 
 						if( o.placement.match( /loupe/ ) ) {
 							// offset the loupe a little differently for touch so that it's not directly beneath a finger
-							var mLeft = ( e.touches ? -o.flyout.width / 1.3 : -o.flyout.width / 2 ) + "px";
-							var mTop = ( e.touches ? -o.flyout.height / 1.3 : -o.flyout.height / 2 ) + "px";
+							var mLeft = ( oe.touches ? -o.flyout.width / 1.3 : -o.flyout.width / 2 ) + "px";
+							var mTop = ( oe.touches ? -o.flyout.height / 1.3 : -o.flyout.height / 2 ) + "px";
 							requestAnimationFrame(function(){
 								$flyout.css( {
 									top: y + "px",
