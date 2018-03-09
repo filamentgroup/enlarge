@@ -13,7 +13,9 @@
 
 	// auto-init on enhance (which is called on domready)
 	$( document ).bind( "enhance", function( e ){
-		$( initSelector, e.target )[ pluginName ]();
+		$( initSelector, e.target ).each(function(){
+			$(this)[ pluginName ]();
+		});
 	});
 
 }( jQuery, this ));
