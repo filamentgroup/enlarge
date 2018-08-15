@@ -44,10 +44,10 @@ jQuery(function($) {
 
 ### Image zoom styles
 
-* ***inline***: Show the zoomed image in the same place and dimensions as the original image
-* ***flyoutloupe***: Show the zoomed image in a small window which follows the cursor/touchpoint
-* ***flyoutleft***: Show the zoomed image in a window to the left of the image
-* ***flyoutright***: Show the zoomed image in a window to the right of the image
+* **inline**: Show the zoomed image in the same place and dimensions as the original image
+* **flyoutloupe**: Show the zoomed image in a small window which follows the cursor/touchpoint
+* **flyoutleft**: Show the zoomed image in a window to the left of the image
+* **flyoutright**: Show the zoomed image in a window to the right of the image
 
 Note, the dimensions of the flyout* styles are determined by the `flyout` option.
 
