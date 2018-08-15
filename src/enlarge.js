@@ -17,8 +17,8 @@
 				hoverZoomWithoutClick: true,
 				delay: 300,
 				flyout: {
-					width: 200,
-					height: 200
+					width: 300,
+					height: 300
 				},
 				placement: "inline",
 				magnification: 3
@@ -131,7 +131,8 @@
 					var flyoutSide = o.placement.match( /left|right/ );
 
 					if( flyoutSide ){
-						$flyout.css( flyoutSide[ 0 ], -o.flyout.width + "px" );
+						$flyout.css( flyoutSide[0], (-o.flyout.width - 10) + "px" );
+						$flyout.css( "top", "0" );
 					}
 					// if loupe mode, center offset
 					var loupe = o.placement.match( /loupe/ );
