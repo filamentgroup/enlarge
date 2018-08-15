@@ -11,25 +11,19 @@
 
 		</style>
 		<link rel="stylesheet" href="../src/enlarge.css" />
-		<style>
-			body {
-				max-width: 600px;
-				margin: 50px auto;
-			}
-		</style>
 	</head>
 	<body>
 
-	<div class="enlarge_pane">
-		<div class="enlarge">
-			<div class="enlarge_contain">
-				<img src="imgs/bike.jpg" srcset="imgs/bike.jpg " sizes="100vw" alt="" id="test-img">
+		<div class="enlarge_pane_contain">
+			<div class="enlarge_pane">
+				<div class="enlarge">
+					<div class="enlarge_contain">
+						<img src="imgs/image.jpg" srcset="imgs/image.jpg 800w, imgs/image@2x.jpg 1600w, imgs/image@3x.jpg 2400w" sizes="600px" alt="" id="test-img">
+					</div>
+					<a href="imgs/image.jpg" class="enlarge_btn" title="Toggle Zoom">Toggle Zoom</a>
+				</div>
 			</div>
-			<a href="imgs/bike.jpg" class="enlarge_btn" title="Toggle Zoom">Toggle Zoom</a>
 		</div>
-
-	</div>
-
 
 		<!-- normally you would concatenate these -->
 		<script src="../libs/jquery/jquery.js"></script>
