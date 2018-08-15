@@ -30,7 +30,6 @@ jQuery(function($) {
 
 ```javascript
   {
-    button: true, // display a zoom toggle button
     hoverZoomWithoutClick: true, // automatically trigger zoom without clicking, when possible
     delay: 300,
     flyout: { // dimensions for flyout and loupe style image zooms

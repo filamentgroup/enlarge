@@ -14,14 +14,13 @@
 
 			// options
 			var o = $(this).data("options") || {
-				button: true,
 				hoverZoomWithoutClick: true,
 				delay: 300,
 				flyout: {
 					width: 300,
 					height: 300
 				},
-				placement: "inline",
+				placement: "flyout",
 				magnification: 3
 			};
 
@@ -133,7 +132,7 @@
 
 					if( flyoutSide ){
 						$flyout.css( flyoutSide[0], (-o.flyout.width - 10) + "px" );
--           $flyout.css( "top", "0" );
+						$flyout.css( "top", "0" );
 					}
 					// if loupe mode, center offset
 					var loupe = o.placement.match( /loupe/ );
