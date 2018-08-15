@@ -4,9 +4,13 @@
  * Copyright (c) 2016 Filament Group, Inc.
  * Licensed under MIT
 */
-
+.enlarge_pane_contain,
 .enlarge_pane {
 	position: relative;
+}
+.enlarge_pane_contain{
+	max-width: 600px;
+	margin: 20px;
 }
 .enlarge_btn {
 	position: absolute;
