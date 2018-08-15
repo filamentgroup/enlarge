@@ -5,6 +5,7 @@
 		var $ = w.jQuery;
 		var pluginName = "enlarge";
 		$.fn[ pluginName ] = function( options ){
+
 			var pluginArgs = arguments;
 
 			// options
@@ -128,7 +129,7 @@
 
 					if( flyoutSide ){
 						$flyout.css( flyoutSide[0], (-o.flyout.width - 10) + "px" );
-						$flyout.css( "top", "0" );
+-           $flyout.css( "top", "0" );
 					}
 					// if loupe mode, center offset
 					var loupe = o.placement.match( /loupe/ );
@@ -143,7 +144,7 @@
 
 					// add class to specify positioning spot for static css to apply
 					$flyout[ 0 ].className = $flyout[ 0 ].className.replace( /enlarge_flyout\-[^$\s]+/, ' ' );
-					$flyout.addClass( "enlarge_flyout-" +	 o.placement );
+					$flyout.addClass( "enlarge_flyout-" +  o.placement );
 				}
 
 				function disable(){
@@ -369,16 +370,18 @@
 						if( touchStarted && e.type === "mousemove" ){
 							return;
 						}
+						// access the originalEvent, not jQuery event
+						var oe = e.originalEvent || e;
 						// normalize ev to touch or mouse
-						var ev = e.touches ? e.touches[ 0 ] : e;
+						var ev = oe.touches ? oe.touches[ 0 ] : oe;
 						e.preventDefault();
 						var x = ev.clientX - $contain[ 0 ].getBoundingClientRect().left;
 						var y = ev.clientY - $contain[ 0 ].getBoundingClientRect().top;
 
 						if( o.placement.match( /loupe/ ) ) {
 							// offset the loupe a little differently for touch so that it's not directly beneath a finger
-							var mLeft = ( e.touches ? -o.flyout.width / 1.3 : -o.flyout.width / 2 ) + "px";
-							var mTop = ( e.touches ? -o.flyout.height / 1.3 : -o.flyout.height / 2 ) + "px";
+							var mLeft = ( oe.touches ? -o.flyout.width / 1.3 : -o.flyout.width / 2 ) + "px";
+							var mTop = ( oe.touches ? -o.flyout.height / 1.3 : -o.flyout.height / 2 ) + "px";
 							requestAnimationFrame(function(){
 								$flyout.css( {
 									top: y + "px",
@@ -391,7 +394,7 @@
 
 						var containWidth = $contain[ 0 ].offsetWidth;
 						var containHeight = $contain[ 0 ].offsetHeight;
-						var containScrollWidth =	targetImg.offsetWidth;
+						var containScrollWidth =  targetImg.offsetWidth;
 						var containScrollHeight = targetImg.offsetHeight;
 						var zoomContainWidth = $zoomContain[ 0 ].offsetWidth;
 						var zoomContainHeight = $zoomContain[ 0 ].offsetHeight;
