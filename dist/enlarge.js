@@ -1,5 +1,5 @@
-/*! fg-enlarge - v0.3.0 - 2017-08-29
-* Copyright (c) 2017 Scott Jehl, Filament Group, Inc.; Licensed  */
+/*! fg-enlarge - v0.3.1 - 2018-08-15
+* Copyright (c) 2018 Scott Jehl, Filament Group, Inc.; Licensed MIT */
 ;(function( w ){
 	var enlarge = function(){
 		var $ = w.jQuery;
@@ -13,8 +13,8 @@
 				hoverZoomWithoutClick: true,
 				delay: 300,
 				flyout: {
-					width: 200,
-					height: 200
+					width: 300,
+					height: 300
 				},
 				placement: "inline",
 				magnification: 3
@@ -127,7 +127,8 @@
 					var flyoutSide = o.placement.match( /left|right/ );
 
 					if( flyoutSide ){
-						$flyout.css( flyoutSide[ 0 ], -o.flyout.width + "px" );
+						$flyout.css( flyoutSide[0], (-o.flyout.width - 10) + "px" );
+						$flyout.css( "top", "0" );
 					}
 					// if loupe mode, center offset
 					var loupe = o.placement.match( /loupe/ );
