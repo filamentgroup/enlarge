@@ -5,29 +5,34 @@
  * Licensed under MIT
  */
 ;(function( w ){
+
+	var defaultOptions = {
+		hoverZoomWithoutClick: true,
+		delay: 300,
+		flyout: {
+			width: 300,
+			height: 300
+		},
+		placement: "flyoutright",
+		magnification: 3
+	};
+
 	var enlarge = function(){
 		var $ = w.jQuery;
 		var pluginName = "enlarge";
-		$.fn[ pluginName ] = function( options ){
+		$.fn[ pluginName ] = function(){
 
 			var pluginArgs = arguments;
 
 			// options
-			var o = $(this).data("options") || {
-				hoverZoomWithoutClick: true,
-				delay: 300,
-				flyout: {
-					width: 300,
-					height: 300
-				},
-				placement: "flyout",
-				magnification: 3
-			};
+			var options = $(this).data("options")
 
 			if( typeof options !== "string" ) {
 				// extend with passed options
-				o = $.extend( o, options );
+				// o = $.extend( o, options );
+				o = $.extend({}, defaultOptions, options)
 				$(this).data("options", o);
+
 			}
 
 			var internalResult;
