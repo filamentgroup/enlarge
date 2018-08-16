@@ -13,8 +13,22 @@ Download the [production version][min] or the [development version][max].
 In your web page:
 
 ```html
+
+<!-- example markup -->
+<div class="enlarge_pane_contain">
+  <div class="enlarge_pane">
+    <div class="enlarge inline-demo">
+      <div class="enlarge_contain">
+        <img src="imgs/image.jpg" srcset="imgs/image.jpg 667w, imgs/image@2x.jpg 1333w, imgs/image@3x.jpg 2000w" sizes="600px" alt="" id="test-img">
+      </div>
+      <a href="imgs/image.jpg" class="enlarge_btn" title="Toggle Zoom">Toggle Zoom</a>
+    </div>
+  </div>
+</div>
+
 <script src="jquery.js"></script>
 <script src="dist/enlarge.min.js"></script>
+<!-- plugin init is bound to "enhance" event on body -->
 <script>
 jQuery(function($) {
 	$( document ).bind( "enhance", function(){
@@ -28,8 +42,10 @@ jQuery(function($) {
 
 ## Options
 
+Set as `data` on `.enlarge` element. 
+
 ```javascript
-  {
+$(".my-zoom-image").data("options", {
     hoverZoomWithoutClick: true, // automatically trigger zoom without clicking, when possible
     delay: 300,
     flyout: { // dimensions for flyout and loupe style image zooms
@@ -38,7 +54,8 @@ jQuery(function($) {
     },
     placement: "inline", // style of image zoom, see details below
     magnification: 3 // multiplier for magnification
-  };
+  }
+});
 ```
 
 ### Image zoom styles
