@@ -27,7 +27,7 @@
 					dest: 'libs/jquery/jquery.js'
 				},*/
 				dist: {
-					src: ['src/enlarge.js', 'src/enlarge-init.js'],
+					src: ['src/enlarge.js', 'src/enlarge.init.js'],
 					dest: 'dist/enlarge.js'
 				}
 			},
