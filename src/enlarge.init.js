@@ -11,15 +11,6 @@
 	var pluginName = "enlarge",
 		initSelector = "." + pluginName;
 
-
-	$(".enlarge.inline-demo").data("options", {
-		hoverZoomWithoutClick: true,
-		delay: 300,
-		placement: "inline",
-		magnification: 5
-	});
-
-
 	// auto-init on enhance (which is called on domready)
 	$( document ).bind( "enhance", function( e ){
 		$( initSelector, e.target )[ pluginName ]();
