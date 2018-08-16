@@ -45,7 +45,7 @@ jQuery(function($) {
 Set as `data` on `.enlarge` element. 
 
 ```javascript
-$(".my-zoom-image").data("options", {
+$(".enlarge.my-zoom-image").data("options", {
     hoverZoomWithoutClick: true, // automatically trigger zoom without clicking, when possible
     delay: 300,
     flyout: { // dimensions for flyout and loupe style image zooms
