@@ -13,24 +13,24 @@
 			width: 300,
 			height: 300
 		},
-		placement: "flyoutright",
+		placement: "inline",
 		magnification: 3
 	};
 
 	var enlarge = function(){
 		var $ = w.jQuery;
 		var pluginName = "enlarge";
-		$.fn[ pluginName ] = function(){
-
+		$.fn[ pluginName ] = function( options ){
 			var pluginArgs = arguments;
 
-			// options
-			var options = $(this).data("options")
+			var dataOptions = $(this).data("options");
+			// merge options passed as element data with default options
+			var o = $.extend({}, defaultOptions, dataOptions);
 
 			if( typeof options !== "string" ) {
-				// extend with passed options
-				// o = $.extend( o, options );
-				o = $.extend({}, defaultOptions, options)
+				// if .enlarge called with non-string argument,
+				// merge that with o
+				o = $.extend( o, options );
 				$(this).data("options", o);
 
 			}
