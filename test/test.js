@@ -15,6 +15,21 @@
 		});
 	});
 
+	QUnit.module("options merging", {
+		before: function(){
+			$(".enlarge").data("options", {
+				placement: "fakeplacement"
+			})
+			$enlarge = $(".enlarge").enlarge();
+		}
+	});
+
+	QUnit.test("options merged", function(assert){
+		assert.ok($enlarge.data('options').placement === "fakeplacement", "passed option overrides default");
+		assert.ok($enlarge.data('options').magnification === 3, "default option has default value");
+	});
+
+
 	QUnit.module("exposed methods", {
 		before: function(){
 			$enlarge = $(".enlarge").enlarge();
@@ -97,7 +112,7 @@
 
 		// delay - 100ms after triggering mouseenter, should not be zoomed
 		setTimeout(function(){
-			assert.ok(!$enlarge.is(".enlarge-zoomed"), "before tracking delay");
+			assert.ok(!$enlarge.is(".enlarge-zoomed"), "not zoomed before tracking delay");
 		}, delay - 100);
 
 		// delay + 100ms after triggering mouseenter, should be zoomed
@@ -110,11 +125,11 @@
 			setTimeout(done, 200);
 		});
 
-		assert.ok(!$enlarge.is(".enlarge-zoomed"), "before trigger");
+		assert.ok(!$enlarge.is(".enlarge-zoomed"), "not zoomed before trigger");
 		$enlarge.find("img").trigger("mouseenter");
 
 		// immediately after triggering mouseenter, should not be zoomed
-		assert.ok(!$enlarge.is(".enlarge-zoomed"), "after trigger");
+		assert.ok(!$enlarge.is(".enlarge-zoomed"), "not zoomed after trigger");
 	});
 
 	QUnit.test("stop tracking delay", function(assert){
@@ -170,7 +185,7 @@
 				done();
 			});
 
-			$enlarge.find("img").trigger("touchstart");
+			$enlarge.find("img").trigger("touchend");
 			$enlarge.find("img").trigger("click");
 		});
 
