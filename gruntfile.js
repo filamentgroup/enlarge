@@ -12,7 +12,7 @@
 				'<%= grunt.template.today("yyyy-mm-dd") %>\n' +
 				'<%= pkg.homepage ? "* " + pkg.homepage + "\\n" : "" %>' +
 				'* Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>;' +
-				' Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %> */\n',
+				' Licensed <%= pkg.license %> */\n',
 			// Task configuration.
 			clean: {
 				files: ['dist']
@@ -27,7 +27,7 @@
 					dest: 'libs/jquery/jquery.js'
 				},*/
 				dist: {
-					src: ['src/enlarge.js', 'src/enlarge-init.js'],
+					src: ['src/enlarge.js', 'src/enlarge.init.js'],
 					dest: 'dist/enlarge.js'
 				}
 			},
